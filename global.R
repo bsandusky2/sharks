@@ -1,0 +1,5 @@
+packages<- c("shiny", "tidyverse", "plotly", "shinydashboard", "usmap")
+invisible(lapply(packages, library, character.only = T))
+source("./R/shinyFunctions.R")
+source("./Modules/metrics/metricsModule.R")
+attacks<- read_csv("attacks.csv")
