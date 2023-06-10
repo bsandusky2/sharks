@@ -28,7 +28,7 @@ usaSharkAttacks<- function(attackDF, type = "fatal", group){
   
 }
 
-usaAttack<- usaSharkAttacks(attacks, group = c("area"))
+usaAttack<- usaSharkAttacks(attacks, type = "attack", group = c("year", "sharkType"))
 
 #USA Map
 plot_usmap(data = usaAttack, values = 'total', regions = "states")  + 
@@ -36,18 +36,14 @@ plot_usmap(data = usaAttack, values = 'total', regions = "states")  +
   theme(legend.position = "right")
 
 #Area Chart
-fig <- plot_ly(usaAttack, x = ~year, y = ~Food.and.Tobacco, name = 'Food and Tobacco', type = 'scatter', mode = 'none', stackgroup = 'one', fillcolor = '#F5FF8D')
-fig <- fig %>% add_trace(y = ~Household.Operation, name = 'Household Operation', fillcolor = '#50CB86')
-fig <- fig %>% add_trace(y = ~Medical.and.Health, name = 'Medical and Health', fillcolor = '#4C74C9')
-fig <- fig %>% add_trace(y = ~Personal.Care, name = 'Personal Care', fillcolor = '#700961')
-fig <- fig %>% add_trace(y = ~Private.Education, name = 'Private Education', fillcolor = '#312F44')
-fig <- fig %>% layout(title = 'United States Personal Expenditures by Categories',
-                      xaxis = list(title = "",
+usaAttack %>% filter(year>1900) %>% 
+plot_ly(., x = ~year, y = ~total, name = ~sharkType, type = 'scatter',mode = 'lines', 
+               color = ~sharkType, fill = 'tonexty', stackgroup='none') %>%
+  layout(title = 'Shark Attacks and Fatalities',
+                      xaxis = list(title = "Year",
                                    showgrid = FALSE),
-                      yaxis = list(title = "Expenditures (in billions of dollars)",
+                      yaxis = list(title = "Attacks/Fatalities",
                                    showgrid = FALSE))
-
-fig
 
 
 
