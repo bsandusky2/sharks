@@ -1,7 +1,6 @@
 
 usaSharkAttacks<- function(attackDF, type = "fatal", group){
   #Filter down to just the states
-  browser()
   attackDF<- attackDF %>% filter(
     country == "USA",
     !{{group}}[1] %in% c("Puerto Rico", "US Virgin Islands", "Midway Atoll", "CUBA", "East cost",
@@ -16,8 +15,14 @@ usaSharkAttacks<- function(attackDF, type = "fatal", group){
       mutate(attackFatal = 1)
   }
   
-  attachDF2<- attackDF2 %>% 
-    group_by(!!sym(group[1]), !!sym(group[2])) %>% summarise(total = sum(attackFatal))
+  if(length(group) == 2){
+    attachDF2<- attackDF2 %>% 
+      group_by(!!sym(group[1]), !!sym(group[2])) %>% summarise(total = sum(attackFatal))
+  } else{
+    attachDF2<- attackDF2 %>% 
+      group_by(!!sym(group[1])) %>% summarise(total = sum(attackFatal)) %>% 
+      rename(state = area)
+  }
   
   return(attachDF2)
   
